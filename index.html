@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>مترجم EPUB الاحترافي (Gemini)</title>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <style>
+    :root { --primary: #2563eb; --bg: #f8fafc; --card: #ffffff; --text: #1e293b; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 20px; max-width: 900px; margin: 0 auto; line-height: 1.6; }
+    h1 { color: var(--primary); border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+    .card { background: var(--card); padding: 25px; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid #e2e8f0; }
+    label { font-weight: 600; display: block; margin: 15px 0 8px; font-size: 0.95rem; }
+    input, textarea, select { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1; box-sizing: border-box; font-family: inherit; }
+    textarea { font-family: monospace; direction: ltr; min-height: 80px; }
+    button { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; width: 100%; margin-top: 10px; }
+    button:disabled { background: #94a3b8; cursor: not-allowed; }
+    button#clearButton { background: #ef4444; width: auto; float: left; margin-top: 0; padding: 8px 16px; font-size: 0.9rem; }
+    
+    .progress-box { background: #f1f5f9; padding: 15px; border-radius: 8px; margin-top: 20px; }
+    .progress-bar { height: 10px; background: #cbd5e1; border-radius: 5px; overflow: hidden; margin-bottom: 10px; }
+    .progress-fill { height: 100%; width: 0%; background: var(--primary); transition: width 0.3s ease; }
+    .status-text { font-size: 0.9rem; color: #64748b; text-align: center; }
+    
+    #logBox { height: 300px; overflow-y: auto; background: #0f172a; color: #e2e8f0; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 13px; direction: ltr; margin-top: 20px; }
+    .log-entry { margin-bottom: 4px; border-bottom: 1px solid #1e293b; padding-bottom: 2px; }
+    .err { color: #f87171; } .ok { color: #4ade80; } .warn { color: #facc15; }
+    
+    #downloadLink { display: none; background: #10b981; color: white; text-align: center; padding: 15px; border-radius: 8px; text-decoration: none; font-weight: bold; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <h1>📚 مترجم الروايات (EPUB)</h1>
+    <button id="clearButton">🗑️ مسح الذاكرة</button>
+  </div>
+
+  <div class="card">
+    <label>1. مفاتيح Google API (ضع كل مفتاح في سطر):</label>
+    <textarea id="apiKeys" placeholder="AIzaSy..."></textarea>
+    
+    <label>2. ملف الرواية (EPUB):</label>
+    <input id="epubFile" type="file" accept=".epub">
+
+    <label>3. نموذج الذكاء الاصطناعي:</label>
+    <select id="modelSelect">
+      <option value="gemini-1.5-flash">Gemini 1.5 Flash (الأسرع والأرخص - موصى به)</option>
+      <option value="gemini-1.5-pro">Gemini 1.5 Pro (أعلى دقة)</option>
+    </select>
+    
+    <button id="startButton">🚀 بدء الترجمة</button>
+  </div>
+
+  <div class="card" id="statusCard">
+    <h3>حالة العمل</h3>
+    <div class="progress-box">
+      <div class="progress-bar"><div id="progressBar" class="progress-fill"></div></div>
+      <div id="progressText" class="status-text">جاهز للبدء...</div>
+    </div>
+    <a id="downloadLink">⬇️ تنزيل الملف المترجم</a>
+  </div>
+
+  <div id="logBox"></div>
+
+  <script type="module" src="./storage.js"></script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
